@@ -1,4 +1,4 @@
-function imc(peso, altura){
+/* function imc(peso, altura){
     return new Promise((resolve, reject) =>{
         const pesoToNumber = Number(peso)
         const alturaToNumber = Number(altura)
@@ -9,32 +9,40 @@ function imc(peso, altura){
             resolve(resultImc.toFixed(1))
         }
     })
-}
+}*/
 
-function dois(peso,altura){
-    const p = imc(peso, altura).then((result) =>{
-        console.log(`O resultado do IMC foi ${result}`)
+async function imc(peso, altura){
+    if(typeof peso !== 'number' ||typeof altura !== 'number'){
+        return Promise.reject('Peso e Altura precisam ser números.')
+    }    
+    const resultImc = peso / (altura * altura)
+    return resultImc.toFixed(1)  
+}
+async function dois(peso,altura){
+    try{
+        console.log(`Calculando o IMC para peso ${peso} e altura ${altura}...`)
+        const imcResult = await imc(peso, altura)
+        console.log(`O resultado do IMC foi ${imcResult}`)
         switch (true) {
-            case (result < 18.5):
-                console.log('Situação: Magreza')
-                break;
-            case (result >=18.5 && result <=24.9):
-                console.log('Situação: Normal')
-                break;
-            case (result >=25 && result <=29.9):
-                console.log('Situação: Sobrepeso')
-                break;
-            case (result >=30 && result <=39.9):
-                console.log('Situação: Obesidade')
-                break;
-            case (result >40):
-                console.log('Situação: Obesidade grave')
-                break
-            default:
-                break;
-        }
-    }).catch((err)=>{console.log(err)})
-    console.log(`Calculando o IMC para peso ${peso} e altura ${altura}`)
+            case (imcResult < 18.5):
+            console.log('Situação: Magreza')
+            break;
+            case (imcResult >=18.5 && imcResult <=24.9):
+            console.log('Situação: Normal')
+            break;
+            case (imcResult >=25 && imcResult <=29.9):
+            console.log('Situação: Sobrepeso')
+            break;
+            case (imcResult >=30 && imcResult <=39.9):
+            console.log('Situação: Obesidade')
+            break;
+            case (imcResult >40):
+            console.log('Situação: Obesidade grave')
+            break
+            }
+    }catch(err){
+        console.log(err)
+    }
 }
 
 dois(71, 1.74)
